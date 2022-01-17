@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE reference PUBLIC "-//IBM//DTD DITA IBM Reference//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<reference id="lxpc_apis" xml:lang="en-us">
+<title><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> APIs</title>
+<titlealts>
+<navtitle> APIs</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> APIs</searchtitle>
+</titlealts>
+<shortdesc>The chapters in this part describe all available APIs of <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/>. Also, you can view a sample program exploiting a
+selection of these APIs. </shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> APIs</indexterm>
+<indexterm>APIs of <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<refbody>
+<section>
+<title>Supported cryptographic operations</title>
+<p>For each type of cryptographic primitive, certain APIs with different key types and lengths and
+operation modes are supported.</p>
+<p><b>Encryption/Decryption</b></p>
+<pre>
+AES-128-ECB, AES-192-ECB, AES-256-ECB
+AES-128-CBC, AES-192-CBC, AES-256-CBC
+AES-128-XTS, AES-256-XTS</pre>
+<p><b> Message authentication (MAC)</b></p>
+<pre>
+AES-128-CMAC, AES-192-CMAC, AES-256-CMAC
+</pre> 
+<p><b>Authenticated Encryption (AEAD)</b></p>
+<pre>
+AES-128-CCM, AES-192-CCM, AES-256-CCM
+AES-128-GCM, AES-192-GCM, AES-256-GCM</pre> 
+</section>
+</refbody>
+</reference>
+<?Pub *0000003393?>

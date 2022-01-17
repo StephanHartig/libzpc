@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE reference PUBLIC "-//IBM//DTD DITA IBM Reference//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<reference id="lxpc_programming" xml:lang="en-us">
+<title>Programming with <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/>
+</title>
+<titlealts>
+<navtitle> Programming with <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: Programming with <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/></searchtitle>
+</titlealts>
+<shortdesc>This part describes important concepts that you need to know before applying the <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> APIs in order to avoid errors.</shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> programming</indexterm>
+<indexterm> programming with <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<refbody>
+<section>
+<p>With <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/>, you can either generate <ph
+rev="v1i1">a secure key/protected key pair, where the protected key is</ph> derived from a
+persistent secure key and whose effective key can therefore be automatically be re-wrapped with a
+new firmware wrapping key when the old one is no longer available, for example, because an LPAR has
+been rebooted in the meanwhile. </p>
+<p>Or you can directly generate a protected key in the <keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf"/>, when you only need it within the lifetime of an LPAR,
+for example for encrypting swap disks.</p>
+<p>Applications include the &lt;zpc/...> header files corresponding to the required APIs and link
+with <cmdname>-lzp</cmdname>. With the exception of <cmdname>zpc_error_string()</cmdname>, all
+<keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> functions return either no value or an
+integer which is either zero (in case of success), or a non-zero error code (in case of failure).
+</p>
+</section>
+</refbody>
+</reference>
+<?Pub *0000003393?>

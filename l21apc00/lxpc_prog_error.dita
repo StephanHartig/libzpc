@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE concept PUBLIC "-//IBM//DTD DITA IBM Concept//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<concept id="lxpc_prog_error" xml:lang="en-us">
+<title>Error handling and debugging</title>
+<titlealts>
+<navtitle>Error handling</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: Error handling in <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/></searchtitle>
+</titlealts>
+<shortdesc rev="v1i1">All functions except the ones for freeing context objects return an integer
+value, where 0 indicates success and a value greater than 0 indicates a failure. </shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm>error handling</indexterm>
+<indexterm>debugging</indexterm>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/><indexterm>error
+handling</indexterm></indexterm>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"
+/><indexterm>debugging</indexterm></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<conbody>
+<section>
+<p>See the following sample error handling routine: </p>
+<codeblock>
+rc = zpc_foo(); 
+if (rc) { 
+    /* Handle specific error codes. */ 
+    fprintf(stderr, "Error: %d (%s).\n", rc, zpc_error_string(rc));
+}</codeblock>
+<p rev="v1i1">You find a description of the error strings in <xref href="lxpc_apis_error.dita"
+/>.</p>
+<p>In case of multiple errors, the precedence of error codes is undefined. Therefore, applications
+should always check for a non-zero return value before handling specific errors.</p>
+</section>
+<section>
+<title>Debugging</title>
+<p>Setting the environment variable <codeph>ZPC_DEBUG=1</codeph> lets the library print debug
+information to <filepath>stderr</filepath>.</p>
+</section>
+</conbody>
+</concept>
+<?Pub *0000003393?>

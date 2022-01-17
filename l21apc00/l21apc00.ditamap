@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE ibmbook PUBLIC "-//IBM//DTD DITA IBM BookMap//EN"
+ "..\..\dita\dtd\ibmbook.dtd">
+<ibmbook xml:lang="en-us">
+<ibmbooktitle>
+<ibmbooklibrary><ph conref="lxcommon.dita#phrases/lib_title"/></ibmbooklibrary>
+<ibmmainbooktitle>libzpc - A Protected-Key Cryptographic Library <titleline>Version
+1.0</titleline></ibmmainbooktitle>
+</ibmbooktitle>
+<bookmeta>
+<authorinformation id="corp">
+<organizationinfo><namedetails><organizationnamedetails>
+<organizationname>IBM Deutschland Research &amp; Development GmbH</organizationname>
+</organizationnamedetails></namedetails>
+<addressdetails><administrativearea>Information Development</administrativearea><term>Department
+3282</term><thoroughfare>Schoenaicher Strasse 220</thoroughfare><locality><localityname>71032
+Boeblingen</localityname></locality><country>Germany</country></addressdetails>
+<emailaddresses><emailaddress>eservdoc@de.ibm.com</emailaddress>
+</emailaddresses></organizationinfo>
+</authorinformation>
+<publisherinformation><printlocation> </printlocation>
+</publisherinformation>
+<prodinfo><prodname><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></prodname>
+</prodinfo>
+<bookid><booknumber><keyword>SC34-7731-00</keyword></booknumber>
+<maintainer href="#corp"></maintainer></bookid>
+<bookrights><copyrfirst><year>2021</year></copyrfirst>
+<!--<copyrlast> <year>2022</copyrlast>--><bookowner><organization>IBM</organization></bookowner>
+<!--<bookrestriction value="confidential"/>--></bookrights>
+</bookmeta>
+<ibmfrontmatter>
+<editionnotices href="lxpc_editionnotice.dita"><topicmeta><navtitle>Edition notice</navtitle></topicmeta></editionnotices>
+<frontbooklists>
+<toc/></frontbooklists>
+<preface href="lxpc_about_libzpc.dita"/>
+<topicref href="lxpc_soc.dita">
+<topicref href="lxpc_new_for_v10.dita"/>
+</topicref>
+</ibmfrontmatter>
+<part href="lxpc_concepts_part.dita">
+<chapter format="ditamap" href="lxpc_concepts.ditamap"/></part>
+<part href="lxpc_using_part.dita">
+<chapter format="ditamap" href="lxpc_using.ditamap"/></part>
+<part href="lxpc_programming_part.dita">
+<chapter format="ditamap" href="lxpc_programming.ditamap"/></part>
+<part href="lxpc_apis_part.dita">
+<chapter format="ditamap" href="lxpc_apis.ditamap"/></part>
+<ibmbackmatter>
+<topicref href="lxcommon_accessibility.dita"></topicref>
+<topicref href="lxcommon_notices.dita">
+<topicref href="lxpc_trademarks.dita"></topicref>
+</topicref>
+<backbooklists>
+<indexlist/></backbooklists>
+</ibmbackmatter>
+</ibmbook>

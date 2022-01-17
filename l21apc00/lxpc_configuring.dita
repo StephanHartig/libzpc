@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE concept PUBLIC "-//IBM//DTD DITA IBM Concept//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<concept id="lxpc_installing" xml:lang="en-us">
+<title>Configuring <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></title>
+<titlealts>
+<navtitle>Configuring</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: Configuring <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/></searchtitle>
+</titlealts>
+<shortdesc>For the standard use cases when working with <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/>, at least one Crypto Express <keyword
+conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> HSM with a master key configuration is
+required. A new protected key can thus be derived from a persistent secure key which is wrapping the
+required effective key. </shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> configuring</indexterm>
+<indexterm> configuring <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></indexterm>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/tkews"/><indexterm><keyword
+conref="lxpc_conref.dita#lxpc_conref/atke"/></indexterm></indexterm>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/atke"/></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<conbody>
+<p>Depending on the crypto library accessed by your application, you need a <keyword
+conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> configured in <keyword
+conref="lxpc_conref.dita#lxpc_conref/cca"/> mode (for <keyword
+conref="lxpc_conref.dita#lxpc_conref/cca"/> or <keyword conref="lxpc_conref.dita#lxpc_conref/libica"
+/> libraries) or an <keyword conref="lxpc_conref.dita#lxpc_conref/cexallplong"/>. <ph rev="v1i1">To
+support these coprocessors, the respective libraries are required:  the <keyword
+conref="lxpc_conref.dita#lxpc_conref/cca"/> host library <filepath>libcsulcca.so</filepath> or the
+<keyword conref="lxpc_conref.dita#lxpc_conref/ep11"/> host library
+<filepath>libep11</filepath>.so.</ph></p>
+<p>The <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> library uses the <keyword
+conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> to derive a new protected key from a permanent
+secure key, both using the same effective key. As protected keys are volatile, this method ensures
+that a new protected key with the same wrapped effective key can always be derived whenever an old
+protected key does no longer exist.</p>
+<p>To support <keyword conref="lxpc_conref.dita#lxpc_conref/ibm"/> Crypto Express <keyword
+conref="lxpc_conref.dita#lxpc_conref/cryptocoprocs"/> and protected keys, the respective device
+drivers are required. These are documented in <xref
+href="https://www.ibm.com/docs/en/linux-on-systems?topic=commands-upstream-kernel" format="html"
+scope="external">
+<cite>Device Drivers, Features, and Commands</cite></xref> in chapters <cite>Generic cryptographic
+device driver</cite> and <cite>Protected key device driver</cite>. </p>
+<p>For information on how to set an AES master key for a <keyword
+conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> with the help of a <keyword
+conref="lxpc_conref.dita#lxpc_conref/tkews"/> (<keyword conref="lxpc_conref.dita#lxpc_conref/atke"
+/>) read <xref
+href="https://www.ibm.com/docs/en/linux-on-systems?topic=security-how-set-aes-master-key"
+format="html" scope="external"><cite>How to set an AES master key</cite></xref>.</p>
+</conbody>
+</concept>
+<?Pub *0000003393?>

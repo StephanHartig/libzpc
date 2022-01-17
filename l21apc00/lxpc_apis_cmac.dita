@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE reference PUBLIC "-//IBM//DTD DITA IBM Reference//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<reference id="lxpc_apis_cmac" xml:lang="en-us">
+<title>AES CMAC APIs - zpc/aes_cmac.h</title>
+<titlealts>
+<navtitle>AES CMAC APIs</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> AES CMAC APIs</searchtitle>
+</titlealts>
+<shortdesc>In file <filepath>zpc/aes_cmac.h</filepath><keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> provides APIs for message authentication for the 
+Cipher-based Message Authentication Code (CMAC), which is based on the Advanced
+Encryption Standard (AES) block cipher.</shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm>CMAC APIs</indexterm>
+<indexterm>aes_cmac.h</indexterm>
+<indexterm>CMAC APIs</indexterm>
+<indexterm>APIs <indexterm>CMAC</indexterm></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<refbody>
+<section>
+<p>The context of an AES-CMAC operation is stored in objects of type <codeph>struct
+zpc_aes_cmac</codeph>. Context objects must not be shared among multiple threads. They may be used
+for multiple operations by setting or resetting the key.</p>
+</section>
+<section>
+<title>zpc_aes_cmac_alloc</title>
+<p><b>Purpose:</b></p>
+<p>Allocate a new context object for an AES-CMAC operation.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_cmac_alloc (
+    struct zpc_aes_cmac ** ctx )
+</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-CMAC context object</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_cmac_free</title>
+<p><b>Purpose:</b></p>
+<p>Free an AES-CMAC context object.</p>
+<p>If a key is set, the reference count of that key object is decremented. 
+The context object argument is set to NULL.</p>
+<p><b>Format:</b>
+<codeblock>
+void zpc_aes_cmac_free (
+     struct zpc_aes_cmac ** ctx )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-CMAC context object</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+</section>
+<section>
+<title>zpc_aes_cmac_set_key</title>
+<p><b>Purpose:</b></p>
+<p>Set the key to be used in the context of an AES-CMAC operation.</p>
+<p>If a key is already set, the reference count of that key object is decremented. The context's key reference is set to the
+key object argument. If the key object argument is not NULL, the reference count of that key object is incremented.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_cmac_set_key (
+    struct zpc_aes_cmac * ctx,
+    struct zpc_aes_key * key )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-CMAC context object</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_cmac_sign</title>
+<p><b>Purpose:</b></p>
+<p>Sign a message using AES-CMAC to obtain the corresponding message authentication code.</p>
+<p>A message may be processed chunk-wise. Each chunk's length except the last chunk's length 
+must be a multiple of 16 bytes. The same context object must be used to process all chunks 
+without modifying it between operations.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_cmac_sign (
+    struct zpc_aes_cmac * ctx,
+    unsigned char * mac,
+    size_t maclen,
+    const unsigned char * msg,
+    size_t msglen )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-CMAC context object</entry>
+</row>
+<row>
+<entry>output</entry>
+<entry>mac</entry>
+<entry> message authentication code buffer</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>maclen</entry>
+<entry>message authentication code length [bytes]</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>msg</entry>
+<entry>message buffer</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>msglen</entry>
+<entry>message length [bytes]</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_cmac_verify</title>
+<p><b>Purpose:</b></p>
+<p>Verify a message authentication code with a message using AES-CMAC.</p>
+<p>A message may be processed chunk-wise. Each chunk's length except the last chunk's length must 
+be a multiple of 16 bytes. The same context object must be used to process all chunks without 
+modifying it between operations.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_cmac_verify (
+    struct zpc_aes_cmac * ctx,
+    const unsigned char * mac,
+    size_t maclen,
+    const unsigned char * msg,
+    size_t msglen )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-CMAC context object</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>mac</entry>
+<entry> message authentication code buffer</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>maclen</entry>
+<entry>message authentication code length [bytes]</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>msg</entry>
+<entry>message buffer</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>msglen</entry>
+<entry>message length [bytes]</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+</refbody>
+</reference>
+<?Pub *0000003393?>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE reference PUBLIC "-//IBM//DTD DITA IBM Reference//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<reference id="lxpc_apis_error" xml:lang="en-us">
+<title>Error API - zpc/error.h</title>
+<titlealts>
+<navtitle> Error API</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> Error API</searchtitle>
+</titlealts>
+<shortdesc>In file <filepath>zpc/error.h</filepath>, <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> provides one API to handle all errors that may occur
+for cryptographic operations. </shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm>error API</indexterm>
+<indexterm>API <indexterm>for errors</indexterm></indexterm>
+<indexterm>error.h</indexterm>
+</keywords>
+</metadata>
+</prolog>
+<refbody>
+<section>
+<p>The <filepath>error.h</filepath> header file contains ZPC_ERROR_XXX definitions of error codes
+greater than 0. Each error code is mapped to the corresponding error explanation string.</p>
+<dl>
+<dlentry>
+<dt><codeph> #define ZPC_ERROR_ARG1NULL 1</codeph></dt>
+<dd> Function argument 1 is NULL.</dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG2NULL 2 </codeph></dt>
+<dd>Function argument 2 is NULL. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG3NULL 3</codeph></dt>
+<dd>Function argument 3 is NULL. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG4NULL 4 </codeph></dt>
+<dd>Function argument 4 is NULL. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG5NULL 5 </codeph></dt>
+<dd>Function argument 5 is NULL. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG6NULL 6 </codeph></dt>
+<dd>Function argument 6 is NULL. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG7NULL 7 </codeph></dt>
+<dd>Function argument 7 is NULL. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG8NULL 8</codeph></dt>
+<dd>Function argument 8 is NULL. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG1RANGE 9 </codeph></dt>
+<dd>Function argument 1 is out of range.</dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG2RANGE 10 </codeph></dt>
+<dd>Function argument 2 is out of range. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG3RANGE 11</codeph></dt>
+<dd>Function argument 3 is out of range. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG4RANGE 12 </codeph></dt>
+<dd>Function argument 4 is out of range. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG5RANGE 13 </codeph></dt>
+<dd>Function argument 5 is out of range. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG6RANGE 14 </codeph></dt>
+<dd>Function argument 6 is out of range. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG7RANGE 15 </codeph></dt>
+<dd>Function argument 7 is out of range. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_ARG8RANGE 16 </codeph></dt>
+<dd>Function argument 8 is out of range.</dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_MALLOC 17 </codeph></dt>
+<dd>Malloc failed. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_KEYNOTSET 18 </codeph></dt>
+<dd>Key not set. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_KEYSIZE 19 </codeph></dt>
+<dd>Invalid key size. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_IVNOTSET 20 </codeph></dt>
+<dd>IV not set. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_IVSIZE 21 </codeph></dt>
+<dd>Invalid IV size. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_TAGSIZE 22 </codeph></dt>
+<dd>Invalid tag size. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_TAGMISMATCH 23 </codeph></dt>
+<dd>Tag mismatch. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_HWCAPS 24 </codeph></dt>
+<dd>Function not supported. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_SMALLOUTBUF 25 </codeph></dt>
+<dd>Output buffer too small. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_APQNSNOTSET 26 </codeph></dt>
+<dd>APQNs not set.</dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_KEYTYPE 27 </codeph></dt>
+<dd>Invalid key type. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_KEYTYPENOTSET 28 </codeph></dt>
+<dd>Key type not set.</dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_IOCTLGENSECK2 29 </codeph></dt>
+<dd>PKEY_GENSECK2 ioctl failed. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_IOCTLCLR2SECK2 30</codeph></dt>
+<dd>PKEY_CLR2SECK2 ioctl failed. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_IOCTLBLOB2PROTK2 31 </codeph></dt>
+<dd>PKEY_BLOB2PROTK2 ioctl failed.</dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_WKVPMISMATCH 32 </codeph></dt>
+<dd>Wrapping key verification pattern mismatch. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_DEVPKEY 33 </codeph></dt>
+<dd>Opening <filepath>/dev/pkey</filepath> failed. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_CLEN 34 </codeph></dt>
+<dd>Ciphertext too long.</dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_MLEN 35 </codeph></dt>
+<dd>Message too long. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_AADLEN 36 </codeph></dt>
+<dd>Additional authenticated data too long. </dd>
+</dlentry>
+<!--<dlentry><dt><codeph>#define ZPC_ERROR_LABELUNDEF 37 </codeph></dt><dd>Label is undefined. </dd></dlentry>-->
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_PARSE 38 </codeph></dt>
+<dd>Parse error. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_APQNNOTFOUND 39 </codeph></dt>
+<dd>APQN not found in APQN list. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_MKVPLEN 40</codeph></dt>
+<dd>MKVP too long. </dd>
+</dlentry>
+<!--<dlentry><dt><codeph>#define ZPC_ERROR_UNINITIALIZED 41 </codeph></dt><dd>Object uninitialized. </dd></dlentry>-->
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_INITLOCK 42 </codeph></dt>
+<dd>Initializing a lock failed. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_OBJINUSE 43 </codeph></dt>
+<dd>Object is in use. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_IOCTLAPQNS4KT 44 </codeph></dt>
+<dd>PKEY_APQNS4KT ioctl failed. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_KEYSIZENOTSET 45 </codeph></dt>
+<dd>Key-size not set. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_IOCTLGENPROTK 46 </codeph></dt>
+<dd>PKEY_GENPROTK ioctl failed. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_PROTKEYONLY 47 </codeph></dt>
+<dd>Protected-key only. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_KEYSEQUAL 48 </codeph></dt>
+<dd>Keys are equal. </dd>
+</dlentry>
+<dlentry>
+<dt><codeph>#define ZPC_ERROR_NOTSUP 49 </codeph></dt>
+<dd>Not supported. </dd>
+</dlentry>
+</dl>
+</section>
+<section>
+<title>zpc_error_string</title>
+<p><b>Purpose:</b></p>
+<p>Map an error code to a string containing the corresponding error explanation.</p>
+<p><b>Format:</b>
+<codeblock>
+const char * zpc_error_string (
+      int err )
+</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="18*"/>
+<colspec colname="col2" colwidth="30*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input</entry>
+<entry>err</entry>
+<entry>An error code.</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return:</b></p>
+<p>A pointer to a string containing the textual error explanation.</p>
+</section>
+</refbody>
+</reference>
+<?Pub *0000003393?>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE map PUBLIC "-//IBM//DTD DITA IBM Map//EN"
+ "ibm-map.dtd">
+<map id="lxoc_dmap_main" xml:lang="en-us" title="libzpc - A Protected-Key Cryptographic Library">
+<topicmeta>
+<prodinfo>
+<prodname>libzpc</prodname>
+<vrmlist>
+<vrm version="1" release="0"/>
+</vrmlist>
+</prodinfo>
+</topicmeta>
+<topicref href="lxpc_linuxonz.dita">
+<topicref href="lxpc_pdf.dita">
+<topicmeta>
+<navtitle>PDF file</navtitle>
+</topicmeta>
+</topicref>
+<topicref href="lxpc_about_libzpc.dita">
+<topicmeta>
+<navtitle>About this document</navtitle>
+</topicmeta>
+</topicref>
+<topicref href="lxpc_soc.dita">
+<topicmeta>
+<navtitle>Summary of changes</navtitle>
+</topicmeta>
+<topicref href="lxpc_new_for_v10.dita">
+</topicref>
+</topicref>
+
+<topicref href="lxpc_concepts_part.dita">
+<topicref format="ditamap" href="lxpc_concepts.ditamap" scope="local">
+<topicmeta>
+<navtitle>Concepts</navtitle>
+</topicmeta>
+</topicref>
+</topicref>
+<topicref href="lxpc_using_part.dita">
+<topicref format="ditamap" href="lxpc_using.ditamap" scope="local">
+<topicmeta>
+<navtitle>Prerequisites</navtitle>
+</topicmeta>
+</topicref>
+</topicref>
+<topicref href="lxpc_programming_part.dita">
+<topicref format="ditamap" href="lxpc_programming.ditamap" scope="local">
+<topicmeta>
+<navtitle>Programming</navtitle>
+</topicmeta>
+</topicref>
+</topicref>
+<topicref href="lxpc_apis_part.dita">
+<topicref format="ditamap" href="lxpc_apis.ditamap" scope="local">
+<topicmeta>
+<navtitle>APIs</navtitle>
+</topicmeta>
+</topicref>
+</topicref>
+</topicref>
+</map>
+<?Pub *0000002266?>

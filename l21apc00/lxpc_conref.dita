@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002--><!DOCTYPE dita PUBLIC "-//IBM//DTD DITA IBM Composite//EN" "ibm-ditabase.dtd">
+<?Pub Sty _display FontColor="red"?><?Pub Inc?><dita xml:lang="en-us">
+<topic id="lxpc_conref" xml:lang="en-us">
+<title>Text symbols</title>
+<prolog>
+<metadata>
+<keywords />
+</metadata>
+</prolog>
+<body>
+<p><keyword id="ibm"><tm tmtype="reg" trademark="IBM">IBM</tm></keyword></p>
+<p><keyword id="aeskeyobj">AES key object</keyword></p>
+<p><keyword id="masterkeyobj">master key object</keyword></p>
+<p><keyword id="contob">content object</keyword></p>
+<p><keyword id="contob_upper">Content object</keyword></p>
+<p><keyword id="cca">CCA</keyword></p>
+<p><keyword id="cpacf">CPACF</keyword></p>
+<p><keyword id="cpacf_long">CP Assist for Cryptographic Functions</keyword></p>
+<p><keyword id="cexallplong">Crypto Express EP11 coprocessor</keyword></p>
+<p><keyword id="cryptocoproc">cryptographic coprocessor</keyword></p>
+<p><keyword id="cryptocoprocs">cryptographic coprocessors</keyword></p>
+<p><keyword id="ep11">EP11</keyword></p>
+<p><keyword id="libzpc">libzpc</keyword></p>
+<p><keyword id="libica">libica</keyword></p>
+<p><keyword id="atke">TKE</keyword></p>
+<p><keyword id="atkews">TKE workstation</keyword></p>
+<p><keyword id="tke_only">Trusted Key Entry</keyword></p>
+<p><keyword id="tkews">Trusted Key Entry workstation</keyword></p>
+<p><keyword id="zos"><tm tmtype="reg" trademark="z/OS">z/OS</tm></keyword></p>
+</body>
+</topic>
+<reference id="links" xml:lang="en-us">
+<title>Links</title>
+<refbody>
+<section>
+<ul>
+<li> </li>
+<li><xref href="https://github.com/opencryptoki/opencryptoki" format="html" scope="external" id="ock_github" /></li>
+<li><xref href="http://docs.oasis-open.org/pkcs11/pkcs11-ug/v2.40/pkcs11-ug-v2.40.html" format="html" scope="external">PKCS #11 Cryptographic Token Interface Usage Guide Version
+2.40</xref></li>
+</ul>
+</section>
+</refbody>
+</reference>
+</dita>

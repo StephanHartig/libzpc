@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE topic PUBLIC "-//IBM//DTD DITA IBM Topic//EN" "ibm-topic.dtd">
+<topic id="lxpc_v10" xml:lang="en-us">
+<title>Edition SC34-7731-00: Content for  <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/>
+version 1.0</title>
+<prolog>
+<metadata>
+<keywords>
+<indexterm>summary of changes<indexterm>edition SC34-7731-00</indexterm><indexterm>version
+1.0</indexterm></indexterm>
+<indexterm>edition SC34-7731-00</indexterm>
+</keywords>
+</metadata>
+</prolog>
+<body>
+<section>
+<?Pub Caret 43?>
+<p><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> version 1.0 implements the following
+features:</p>
+<ul>
+<li>an AES-KEY API: <xref href="lxpc_apis_key.dita"/></li>
+<li>an AES-CBC API: <xref href="lxpc_apis_cbc.dita"/></li>
+<li>an AES-CCM API: <xref href="lxpc_apis_ccm.dita"/></li>
+<li>an AES-CMAC API: <xref href="lxpc_apis_cmac.dita"/></li>
+<li>an AES-ECB API: <xref href="lxpc_apis_ecb.dita"/></li>
+<li>an AES-GCM API: <xref href="lxpc_apis_gcm.dita"/></li>
+<li>an AES-XTS API: <xref href="lxpc_apis_xts.dita"/></li>
+</ul>
+</section>
+</body>
+</topic>
+<?Pub *0000001545?>

@@ -1,0 +1,853 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE reference PUBLIC "-//IBM//DTD DITA IBM Reference//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<reference id="lxpc_apis_key_object" xml:lang="en-us">
+<title>AES key APIs - zpc/aes_key.h</title>
+<titlealts>
+<navtitle> AES key APIs</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> AES key APIs</searchtitle>
+</titlealts>
+<shortdesc>In file <filepath>zpc/aes_key.h</filepath>, <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> provides APIs for managing Advanced Encryption
+Standard (AES) block cipher keys. </shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm>AES key APIs</indexterm>
+<indexterm>WKVP <indexterm>wrapping key verification pattern</indexterm></indexterm>
+<indexterm>wrapping key verification pattern <indexterm>WKVP</indexterm></indexterm>
+<indexterm>key APIs</indexterm>
+<indexterm>aes_key.h</indexterm>
+<indexterm>APIs <indexterm>key</indexterm></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<refbody><section>
+<p><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/>s of type <codeph>struct
+zpc_aes_key</codeph> store a secure AES key of size 128, 192 or 256 bits and of one of the following
+supported key types:</p>
+<ul>
+<li> ZPC_AES_KEY_TYPE_CCA_DATA: <keyword conref="lxpc_conref.dita#lxpc_conref/cca"/> AES DATA
+keys</li>
+<li>ZPC_AES_KEY_TYPE_CCA_CIPHER: <keyword conref="lxpc_conref.dita#lxpc_conref/cca"/> AES CIPHER
+keys</li>
+<li>ZPC_AES_KEY_TYPE_EP11: EP11 AES keys</li>
+</ul>
+<p>In addition, <keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/>s store flags, a reference
+count and the corresponding protected key. You can set the flags using the API  described in <xref
+href="#lxpc_apis_key_object/set_flags" format="dita"/>.</p>
+<p>Setting flags is optional for <keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/>s and
+flags=0 if flags are not explicitly set.</p>
+<p>The secure key is set by either generating it or importing it (either directly or from a clear key).</p>
+<p>The protected key is automatically derived from the secure key (and re-derived whenever it is
+needed).</p>
+<p>The protected key can also be randomly generated resulting in a protected key that is not
+associated to any secure key. Key objects that are not associated to a secure key become unusable
+when the wrapping key verification pattern (WKVP) changes. <ph rev="v1i1">The wrapping key for a
+protected key is generated for the LPAR or virtual guest at boot time and is deleted when the LPAR
+or guest is shutting down.</ph></p>
+<p>Key object's reference count is 1 on allocation (<apiname>zpc_aes_key_alloc()</apiname>) and
+decremented when freed (<apiname>zpc_aes_key_free()</apiname>). Setting the key object in an
+operation context increments the reference and unsetting the key object in an operation context or
+freeing the operation context decrements the reference count. The key object is destroyed only if
+the reference count is 0. Key objects may be shared among multiple threads.</p>
+</section>
+<section>
+<title>Macros / Constants</title>
+<p>The <filepath>zpc/aes_key.h</filepath> file defines the following constants for the supported key
+types and for re-enciphering actions:</p>
+<codeblock>
+# define ZPC_AES_KEY_TYPE_CCA_DATA     1
+# define ZPC_AES_KEY_TYPE_CCA_CIPHER   2
+# define ZPC_AES_KEY_TYPE_EP11         3
+
+# define ZPC_AES_KEY_REENCIPHER_OLD_TO_CURRENT    1
+# define ZPC_AES_KEY_REENCIPHER_CURRENT_TO_NEW    2
+</codeblock>
+</section>
+<section>
+<title>zpc_aes_key_alloc</title>
+<p><b>Purpose:</b></p>
+<p> Allocate a new <keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/> with reference count
+1.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_alloc (
+    struct zpc_aes_key ** key )
+</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_key_export</title>
+<p><b>Purpose:</b> Export an AES secure key, for example to archive a secure key in a file for
+importing it into the same or another application later. </p>
+<p>If the secure key buffer is NULL, the byte-length of the secure key is returned in the secure key
+length argument.</p>
+<p>If the secure key buffer is not NULL, and the secure key length argument is greater than or equal
+to the secure key's byte length, the secure key is returned in the secure key buffer. The
+byte-length of the secure key is returned in the secure key length argument.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_export (
+    struct zpc_aes_key * key,
+    unsigned char * seckey,
+    size_t * seckeylen )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+<row>
+<entry>output</entry>
+<entry>seckey</entry>
+<entry>AES secure key buffer</entry>
+</row>
+<row>
+<entry>input, output</entry>
+<entry>seckeylen</entry>
+<entry>AES secure key length [bytes]</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_key_free</title>
+<p><b>Purpose:</b> Decreases the reference count of an <keyword
+conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/> and <ph rev="v1i1">destroys it if the count reaches 0. 
+This function does not prevent other functions from increasing the reference count.</ph>
+</p>
+<p><b>Format:</b>
+<codeblock>
+void zpc_aes_key_free (
+     struct zpc_aes_key ** key )</codeblock>
+</p>
+<p rev="v1i1">The pointer to the key (<codeph>*key</codeph>) is set to NULL by the function.</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+</section>
+<section id="key_generate">
+<title>zpc_aes_key_generate</title>
+<p><b>Purpose:</b> Generate a random AES secure/protected key pair or a random protected key.</p>
+<p>A prerequisite for generating a key is that the key size must have been set before using the
+<apiname>zpc_aes_key_set_size()</apiname> function.</p>
+<p>If you did not associate any APQNs with the key object, either directly or setting a matching
+MKVP, or if no key type is set before, a random protected key is generated. Otherwise, a secure key
+is generated <ph rev="v1i1">on one of the defined APQNs</ph> with the attributes that you set before
+in your application. The applicable protected key is then always automatically derived whenever
+required.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_generate (
+    struct zpc_aes_key * key )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_key_import</title>
+<p><b>Purpose:</b> Import an AES secure key. </p>
+<p>Before the import, you must set at least the type and the size of the key. The imported key must
+match these attributes. You can define new APQN settings for the new key either before or after the
+import. <ph rev="v1i1">However, APQNs must be set at the latest before the key can be used for an
+operation.</ph></p>
+<p>No secure key can be imported, if the key object is in use (reference count greater than 1).</p>
+<p>The corresponding protected key is automatically derived.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_import (
+    struct zpc_aes_key * key,
+    const unsigned char * seckey,
+    size_t seckeylen )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+<row>
+<entry rev="v1i1">input</entry>
+<entry>seckey</entry>
+<entry>AES secure key buffer</entry>
+</row>
+<row>
+<entry rev="v1i1">input</entry>
+<entry>seckeylen</entry>
+<entry>AES secure key length [bytes]</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_key_import_clear</title>
+<p><b>Purpose:</b> Import an AES clear key. </p>
+<p>The imported key must match the key object's key size setting.</p>
+<p rev="v1i1">Before the import, you must set at least the type and the size of the key. The imported key must
+match these attributes. You can define new APQN settings for the new key either before or after the
+import. However, APQNs must be set at the latest before the key can be used for an
+operation.</p>
+<p>No clear key can be imported, if the key object is in use (reference count greater than 1).</p>
+<p>The corresponding secure/protected key pair is automatically derived.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_import_clear (
+    struct zpc_aes_key * key 
+    const unsigned char * clearkey )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>clearkey</entry>
+<entry>AES clear key buffer</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+
+
+<section>
+<title>zpc_aes_key_reencipher</title>
+<p><b>Purpose:</b> Re-encipher an AES secure key with another master key. </p>
+<p>Secure keys of type ZPC_AES_KEY_TYPE_EP11 only support ZPC_AES_KEY_REENCIPHER_CURRENT_TO_NEW. </p>
+<p rev="v1i1">A backup of the previous secure key is kept in case the new secure key is not yet
+usable. This backup is kept until the next re-encipher operation and replaced by the updated backup
+secure key.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_reencipher (
+struct zpc_aes_key * key,
+int reenc )
+</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>reenc</entry>
+<entry>ZPC_AES_KEY_REENCIPHER_OLD_TO_CURRENT or
+ZPC_AES_KEY_REENCIPHER_CURRENT_TO_NEW</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+
+
+<section>
+<title>zpc_aes_key_set_apqns</title>
+<p><b>Purpose:</b> Set the AES key APQNs.</p>
+<p>Associate all given APQNs with the key object. 
+This overrides the key object's current APQN settings.</p>
+<p>The APQNs cannot be changed, if the key object is in use (reference count greater than 1).</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_set_apqns (
+    struct zpc_aes_key * key,
+    const char * apqns[ ] )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>apqns</entry>
+<entry>NULL-terminated APQN list</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p>The input APQN parameter is a NULL terminated array of strings, in the following syntax: <codeph
+rev="v1i1">"&lt;optional_whitespace>&lt;card_hex>.&lt;domain_hex>&lt;optional_whitespace>"</codeph>.
+Whitespaces at the beginning or at the end of an APQN string are ignored. The list must be
+terminated by NULL, like shown in the following examples: </p>
+<codeblock rev="v1i1">
+char *apqns1[] = {"01.0037","02.0037","03.0020","0a.0031","0b.0031",NULL};
+rc = zpc_aes_key_set_apqns(key, apqns1);
+char *apqns2[] = {" 01.0037 "," 02.0037 "," 03.0020 "," 0a.0031 "," 0b.0031 ",NULL};
+rc = zpc_aes_key_set_apqns(key, apqns2);</codeblock>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section id="set_flags">
+<title>zpc_aes_key_set_flags</title>
+<p><b>Purpose:</b> Set the AES key flags. Setting flags is optional. If no flags are set, a default
+is applied.</p>
+<p>By setting flags, you can apply certain properties to the key to be generated. The flags have a
+key-type specific meaning and provide a fine grained control of the kernel's key generation
+<cmdname>ioctls</cmdname>.</p>
+<ul>
+<li>For <b>CCA AES DATA</b> keys, there are no flags. Any flags setting is ignored. </li>
+<li>For <b>CCA AES CIPHER</b> keys, there are the following flags (see also kernel file
+<filepath>arch/s390/include/uapi/asm/pkey.h</filepath>): <table id="flags_cca_aes_cipher">
+<tgroup cols="3">
+<colspec colname="c1" colwidth="5cm"/>
+<colspec colname="c2" colwidth="3cm"/>
+<colspec colname="c3" colwidth="9cm"/>
+<thead>
+<row>
+<entry>Flag</entry>
+<entry>Value</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>PKEY_KEYGEN_XPRT_SYM</entry>
+<entry>0x00008000</entry>
+<entry>Allow export using symmetric key. This is the default.</entry>
+</row>
+<row>
+<entry>PKEY_KEYGEN_XPRT_UASY</entry>
+<entry>0x00004000</entry>
+<entry>Allow export using an unauthenticated asymmetric key (not a trusted block).</entry>
+</row>
+<row>
+<entry>PKEY_KEYGEN_XPRT_AASY</entry>
+<entry>0x00002000</entry>
+<entry>Allow export using an authenticated asymmetric key (trusted block).</entry>
+</row>
+<row>
+<entry>PKEY_KEYGEN_XPRT_RAW</entry>
+<entry>0x00001000</entry>
+<entry>Allow export using a raw key. Defined for future use. Currently ignored.</entry>
+</row>
+<row>
+<entry>PKEY_KEYGEN_XPRT_CPAC</entry>
+<entry>0x00000800</entry>
+<entry>Allow export of key to CPACF.</entry>
+</row>
+<row>
+<entry>PKEY_KEYGEN_XPRT_DES</entry>
+<entry>0x00000080</entry>
+<entry>Allow export using a DES key.</entry>
+</row>
+<row>
+<entry>PKEY_KEYGEN_XPRT_AES</entry>
+<entry>0x00000040</entry>
+<entry>Allow export using an AES key.</entry>
+</row>
+<row>
+<entry>PKEY_KEYGEN_XPRT_RSA</entry>
+<entry>0x00000008</entry>
+<entry>Allow export using an RSA key.</entry>
+</row>
+</tbody>
+</tgroup>
+</table></li>
+<li>For <b>EP11 AES</b> keys there are the following flags (see also
+<filepath>/usr/include/ep11-host-devel/ep11.h</filepath>).<p>If the <parmname>flags</parmname>
+parameter is 0, which is the default, the following flags are set:</p><ul compact="yes">
+<li>XCP_BLOB_ENCRYPT</li>
+<li>XCP_BLOB_DECRYPT</li>
+<li>XCP_BLOB_PROTKEY_EXTRACTABLE</li>
+</ul><p>If the <parmname>flags</parmname> parameter is not 0, those flags are set, that correspond
+to the provided input decimal integer. For example, if <codeph>flags=12</codeph>, the flags
+XCP_BLOB_MODIFIABLE (=4) and XCP_BLOB_NEVER_MODIFIABLE (=8) are set, because 8+4=12.</p>
+<table id="flags_ep11_aes" pgwide="1">
+<tgroup cols="3">
+<colspec colname="c1" colwidth="14*"/>
+<colspec colname="c2" colwidth="4*"/>
+<colspec colname="c3" colwidth="15*"/>
+<thead>
+<row>
+<entry>Flag</entry>
+<entry>Value</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>XCP_BLOB_EXTRACTABLE</entry>
+<entry>1</entry>
+<entry>This key may be encrypted by other keys. Cannot be reset.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_NEVER_EXTRACTABLE</entry>
+<entry>2</entry>
+<entry>Set this flag if the key was created non-extractable. Can be set only initially and cannot be
+modified.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_MODIFIABLE</entry>
+<entry>4</entry>
+<entry>Attributes of the key may be changed</entry>
+</row>
+<row>
+<entry>XCP_BLOB_NEVER_MODIFIABLE</entry>
+<entry>8</entry>
+<entry>The key object was created read-only. Can be set only initially and cannot be modified.
+</entry>
+</row>
+<row>
+<entry>XCP_BLOB_RESTRICTABLE</entry>
+<entry>0x10</entry>
+<entry>The attributes of the key may be removed, but may not be made more permissive.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_LOCAL</entry>
+<entry>0x20</entry>
+<entry>The key was created inside this CSP, and not imported. This flag is set upon object creation
+and may not be modified.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_ATTRBOUND</entry>
+<entry>0x40</entry>
+<entry>This key may be transported only in attribute-bound formats, but not pure PKCS11 formats. May
+not be modified.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_USE_AS_DATA</entry>
+<entry>0x80</entry>
+<entry>Raw key bytes may be input to other processing as data, such as hashed, or deriving keys from
+them. </entry>
+</row>
+<row>
+<entry>XCP_BLOB_SIGN</entry>
+<entry>0x0100</entry>
+<entry>This key may generate signatures</entry>
+</row>
+<row>
+<entry>XCP_BLOB_SIGN_RECOVER</entry>
+<entry>0x0200</entry>
+<entry>This key may generate (asymmetric) signatures with message recovery.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_DECRYPT</entry>
+<entry>0x0400</entry>
+<entry>This key may decrypt data.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_ENCRYPT</entry>
+<entry>0x0800</entry>
+<entry>This key may encrypt data.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_DERIVE</entry>
+<entry>0x1000</entry>
+<entry>This key may derive other keys.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_UNWRAP</entry>
+<entry>0x2000</entry>
+<entry>This key may decrypt (transport) other keys.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_WRAP</entry>
+<entry>0x4000</entry>
+<entry>This key may encrypt (transport) other keys.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_VERIFY</entry>
+<entry>0x8000</entry>
+<entry>This key may verify signatures.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_VERIFY_RECOVER</entry>
+<entry>0x010000</entry>
+<entry>This key may verify signatures and recover signed messages.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_TRUSTED</entry>
+<entry>0x020000</entry>
+<entry>This key is a PKCS11 CKA_TRUSTED key</entry>
+</row>
+<row>
+<entry>XCP_BLOB_WRAP_W_TRUSTED</entry>
+<entry>0x040000</entry>
+<entry>This key needs a CKA_TRUSTED key-encrypting key. Note: <codeph>_TRUSTED</codeph> enforcement
+does not provide security guarantees. It is only tracked inside the HSM to assist hosts.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_RETAINED</entry>
+<entry>0x080000</entry>
+<entry>The key blob resides within a backend, not on the host.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_ALWAYS_RETAINED</entry>
+<entry>0x100000</entry>
+<entry>This key blob has been generated inside.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_PROTKEY_EXTRACTABLE</entry>
+<entry>0x200000</entry>
+<entry>This key may be imported as protected key. May not be reset.</entry>
+</row>
+<row>
+<entry>XCP_BLOB_PROTKEY_NEVER_EXTRACTABLE</entry>
+<entry>0x400000</entry>
+<entry>This flag is set if the key was created non-extractable as a protected key. It is set only
+initially, and may not be modified.</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+</li>
+</ul>
+<p>The key flags cannot be changed, if the key object is in use (reference count greater than
+1).</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_set_flags (
+    struct zpc_aes_key * key,
+    unsigned int flags )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>flags</entry>
+<entry>key flags, for example, to set the flags XCP_BLOB_MODIFIABLE | XCP_BLOB_NEVER_MODIFIABLE, you
+can code one of the following possibilities: <codeblock>
+zpc_aes_key_set_flags (&amp;aes_key, 12)
+zpc_aes_key_set_flags (&amp;aes_key, 8 | 4)
+zpc_aes_key_set_flags (&amp;aes_key, XCP_BLOB_MODIFIABLE | XCP_BLOB_NEVER_MODIFIABLE</codeblock></entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_key_set_mkvp</title>
+<p><b>Purpose:</b> Set the AES key master key verification pattern (MKVP) to retrieve all matching
+APQNs.</p>
+<p>Instead of specifying the APQNs associated to a secure key directly, you can set a master key
+verification pattern (MKVP). This function then will  associate all APQNs with the key object to be
+generated, where the master key matches the given MKVP.  The value of the MKVP is no longer relevant
+after this call. </p>
+<p rev="v1i1">Before calling this function, the key type must be set. </p>
+<p>This function overrides the key object's current APQN settings.</p>
+<p>The MKVP cannot be <ph rev="v1i1">set</ph>, if the key object is in use (reference count greater
+than 1).</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_set_mkvp (
+    struct zpc_aes_key * key,
+    const char * mkvp )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>mkvp</entry>
+<entry>master key verification pattern</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p>To retrieve the required master key verification pattern, you can check appropriate files on your
+system. For example, if you want to associate all APQNs where the current MKVP is the same as on the
+coprocessor card 1 on domain 37 (APQN: 01.0037) for a <keyword
+conref="lxpc_conref.dita#lxpc_conref/cca"/> coprocessor, view the content of the following file:</p>
+<screen>
+# cat /sys/bus/ap/devices/01.0037/mkvps  /* example for a CCA coprocessor */
+
+AES NEW: full 0x125efe03d9b1e4a3<b>
+AES CUR: valid 0x5bba02a0d7b07924</b>
+AES OLD: valid 0x40910b8c96ef4c8f
+APKA NEW: full 0xe2a46e45db5f47e4
+APKA CUR: valid 0xe2a46e45db5f47e4
+APKA OLD: valid 0xe2a46e45db5f47e4
+  </screen>
+<p rev="v1i1">You can specify the string for the <parmname>mkvp</parmname> parameter with or without
+the hexadecimal signature, for example, "0x5bba02a0d7b07924" or "5bba02a0d7b07924" .</p>
+<p>A sample for a <keyword conref="lxpc_conref.dita#lxpc_conref/cexallplong"/> looks like
+follows:</p>
+<screen>
+cat /sys/bus/ap/devices/02.0037/mkvps
+
+ <b>WK CUR: valid 0xef490ddfce10b330b86cfe6db2ae2db98d65e8c19d9cb7a1b378dec93e398eb0</b>
+ WK NEW: committed 0x523072cacc0fb7fd0e1f050da3ea8fed035b59ea4b8432b4ac53f66861ea88e1
+ </screen>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_key_set_size</title>
+<p><b>Purpose:</b> Set the AES key size.</p>
+<p>The key size cannot be changed, if the key object is in use (reference count greater than 1).</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_set_size (
+    struct zpc_aes_key * key,
+    int size )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>size</entry>
+<entry>128, 192 or 256 bit key size</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_key_set_type</title>
+<p><b>Purpose:</b> Set the AES key type.</p>
+<p>The key type cannot be changed, if the key object is in use (reference count greater than 1).</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_key_set_type (
+    struct zpc_aes_key * key,
+    int type )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>key</entry>
+<entry><keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>type</entry>
+<entry>ZPC_AES_KEY_TYPE_CCA_DATA, ZPC_AES_KEY_TYPE_CCA_CIPHER, or ZPC_AES_KEY_TYPE_EP11</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+</refbody>
+</reference>
+<?Pub *0000003393?>

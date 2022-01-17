@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE task PUBLIC "-//IBM//DTD DITA IBM Task//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<task id="lxpc_installing" xml:lang="en-us">
+<title>Installing <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></title>
+<titlealts>
+<navtitle>Installing</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: Installing <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/></searchtitle>
+</titlealts>
+<shortdesc>Learn about the commands used to install <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/>.</shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> installing</indexterm>
+<indexterm> installing <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<taskbody>
+<steps>
+<step>
+<cmd>To install the shared library, perform the following commands:</cmd>
+<info>
+<codeblock>
+sudo make install
+sudo ldconfig</codeblock>
+</info></step>
+</steps></taskbody>
+</task>
+<?Pub *0000003393?>

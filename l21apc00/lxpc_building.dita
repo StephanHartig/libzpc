@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE concept PUBLIC "-//IBM//DTD DITA IBM Concept//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<concept id="lxpc_building" xml:lang="en-us">
+<title>Building <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></title>
+<titlealts>
+<navtitle>Building</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: Building <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/></searchtitle>
+</titlealts>
+<shortdesc>Read about the prerequisites and instructions for building the <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> library.</shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> building</indexterm>
+<indexterm> building <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<conbody>
+<p>The following software components are the minimum requirements for building the <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> library:</p>
+<ul>
+<li>a 64-bit <ph conref="lxcommon.dita#phrases/ph_loz_and_lone"/> platform (s390x)</li>
+<li>a <ph conref="lxcommon.dita#phrases/ph_linuxs"/> kernel version 5.7 or later.</li>
+<li> a C99 compiler for the C programming language (a GCC-compatible compiler driver (clang))</li>
+<li>the <apiname>libpthread</apiname> library, providing functions that support POSIX threading</li>
+<li><apiname> CMake</apiname> version 3.10 or later, an open source, cross-platform family of tools
+designed to build, test and package software.</li>
+<li>a <apiname>make</apiname> tool for automatic building of executable programs and libraries from
+source code.</li>
+</ul>
+<p>Additional prerequisites for building the test program are the following components: </p>
+<ul>
+<li>a C++11 compiler (clang or g++), </li>
+<li>a libjson-c devel package version 0.13 or later, which is a library to construct JSON objects in
+C, output them as JSON formatted strings, and parse JSON formatted strings back into the C
+representation of JSON objects, </li>
+<li>an internet connection.</li>
+</ul>
+<section>
+<title>Generating <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> documentation</title>
+<p>Following is a list of additional prerequisites for building the html files, which are generated
+from information within the <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> code for
+producing documentation of <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/>. You can use one
+of the listed documentation generators:</p>
+<ul>
+<li>Doxygen version 1.8.17 or later, which is a documentation generator and static analysis tool for software source trees. 
+When used as a documentation generator, Doxygen extracts information from specially-formatted comments within the code.</li>
+<li>latex or bibtex, which are document generation tools most often used for producing
+medium-to-large technical or scientific documents.</li>
+</ul>
+<p>The source for generating the documentation is updated with each published modification 
+of <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> and may contain information that is 
+more current than the current edition of this publication.</p>
+</section>
+<section>
+<title>Building the executable <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/>
+library</title>
+<p>To build the  executable <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> library
+versions, execute the following commands: </p>
+<screen>
+mkdir build &amp;&amp; cd build
+cmake ..
+make</screen>
+<p>You can pass the following options to the <cmdname>cmake</cmdname> invocation:</p>
+<dl>
+<dlentry>
+<dt>
+DCMAKE_INSTALL_PREFIX=&lt;path>
+</dt>
+<dd>Change the install prefix from /usr/local/ to &lt;path>.</dd>
+</dlentry><dlentry>
+<dt>DCMAKE_BUILD_TYPE=&lt;type> : </dt>
+<dd>Choose predefined build options. The choices for &lt;type> are Debug, Release, RelWithDebInfo, and MinSizeRel.</dd>
+</dlentry><dlentry>
+<dt>DBUILD_SHARED_LIBS=ON</dt>
+<dd>Build a shared object (instead of an archive).</dd>
+</dlentry>
+<dlentry>
+<dt>DBUILD_TEST=ON</dt>
+<dd>Build the test program.</dd>
+</dlentry>
+<dlentry>
+<dt>DBUILD_DOC=ON</dt>
+<dd>Build the html and latex doc.</dd>
+</dlentry>
+</dl><screen><b>Command example here ????</b></screen>
+<p>For options that are available for the <cmdname>cmake</cmdname> command, refer to the <xref
+href="https://cmake.org/cmake/help/latest/manual/cmake.1.html" format="html" scope="external"
+><cite>cmake man page</cite></xref>.</p>
+<p>Custom compile options can also be passed to <cmdname>cmake</cmdname> via the CFLAGS and CXXFLAGS
+environment variables.</p>
+</section>
+</conbody>
+</concept>
+<?Pub *0000003393?>

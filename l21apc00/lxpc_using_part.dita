@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE concept PUBLIC "-//IBM//DTD DITA IBM Concept//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<concept id="lxpc_using" xml:lang="en-us">
+<title>Prerequisites for using <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></title>
+<titlealts>
+<navtitle>Prerequisites</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: Prerequisites for using <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/></searchtitle>
+</titlealts>
+<shortdesc>Before you can write applications exploiting the <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> APIs, learn about the tasks how to build, test, install, 
+and configure <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/>.</shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> prerequisites</indexterm>
+<indexterm> prerequisites for <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<conbody>
+<p>The <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> source is hosted on GitHub:</p>
+<codeblock><xref href="https://github.com/opencryptoki/libzpc" format="html" scope="external"/></codeblock>
+<p>As a prerequisite for building the <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/>
+library, download or clone the required files by selecting one of the methods offered by GitHub. </p>
+</conbody>
+</concept>
+<?Pub *0000003393?>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE reference PUBLIC "-//IBM//DTD DITA IBM Reference//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<reference id="lxpc_apis_xts" xml:lang="en-us">
+<title>AES XTS APIs - zpc/aes_xts.h</title>
+<titlealts>
+<navtitle>AES XTS APIs</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> AES XTS APIs</searchtitle>
+</titlealts>
+<shortdesc>In file <filepath>zpc/xts_cbc.h</filepath>, <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> provides encryption APIs for the 
+Advanced Encryption Standard (AES) block cipher in 
+Xor-Encrypt-Xor-based Tweaked Stealing (XTS) mode of operation.
+</shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm>AES XTS APIs</indexterm>
+<indexterm>aes_xts.h</indexterm>
+<indexterm>XTS APIs</indexterm>
+<indexterm>APIs <indexterm>XTS</indexterm></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<refbody><section>
+<p>The context of an AES-XTS operation is stored in objects of type <codeph>struct
+zpc_aes_xts</codeph>. Context objects must not be shared among multiple threads. They may be used
+for multiple operations by setting or resetting the key.</p>
+</section>
+<section>
+<title>zpc_aes_xts_alloc</title>
+<p><b>Purpose:</b></p>
+<p>Allocate a new context object for an AES-XTS operation.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_xts_alloc ( 
+    struct zpc_aes_xts ** ctx )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-XTS context object</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_xts_decrypt</title>
+<p><b>Purpose:</b></p>
+<p>Decrypt a ciphertext using AES-XTS to obtain the corresponding plaintext.</p>
+<p>The plaintext buffer must be large enough to store the resulting plaintext which 
+has the same length as the ciphertext.</p>
+<p>The plaintext and ciphertext buffers may be equal such that the operation is done in-place. If
+the operation is not done in-place, plaintext and ciphertext buffers must not overlap.</p>
+<p>A ciphertext may be decrypted chunk-wise. For every operation on a ciphertext chunk, 
+the same rules apply as for the one-shot decryption. All chunk-lengths except the final one must 
+be a multiple of 16 bytes. The same context object must be used to decrypt all chunks without 
+modifying it between operations.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_xts_decrypt (
+    struct zpc_aes_xts * ctx,
+    unsigned char * pt,
+    const unsigned char * ct,
+    size_t ctlen)</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-XTS context object</entry>
+</row>
+<row>
+<entry>output</entry>
+<entry>pt</entry>
+<entry>plaintext buffer</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>ct</entry>
+<entry>ciphertext buffer</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>ctlen</entry>
+<entry>ciphertext length [bytes]</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_xts_encrypt</title>
+<p><b>Purpose:</b></p>
+<p>Encrypt a plaintext using AES-XTS to obtain the corresponding ciphertext.</p>
+<p>The ciphertext buffer must be large enough to store the resulting ciphertext which has the same length as the
+(padded) plaintext.</p>
+<p>Plaintext and ciphertext buffer may be equal such that the operation is done in-place. If the operation is not done
+in-place, plaintext and ciphertext buffers must not overlap.</p>
+<p>A plaintext may be encrypted chunk-wise. For every operation on a plaintext chunk, the same rules apply as for the
+one-shot encryption. All chunk-lengths except the final one must be a multiple of 16 bytes. The same context object
+must be used to encrypt all chunks without modifying it between operations.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_xts_encrypt (
+    struct zpc_aes_xts * ctx,
+    unsigned char * ct,
+    const unsigned char * pt,
+    size_t ptlen )
+ </codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-XTS context object</entry>
+</row>
+<row>
+<entry>output</entry>
+<entry>ct</entry>
+<entry>ciphertext buffer</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>pt</entry>
+<entry>plaintext buffer</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>ptlen</entry>
+<entry>plaintext length [bytes]</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_xts_free</title>
+<p><b>Purpose:</b></p>
+<p>Free an AES-XTS context object.</p>
+<p>If a key is set, the reference count of that key object is decremented. The context object argument is set to NULL.</p>
+<p><b>Format:</b>
+<codeblock>
+void zpc_aes_xts_free (
+     struct zpc_aes_xts ** ctx )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-XTS context object</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+</section>
+<section>
+<title>zpc_aes_xts_set_iv</title>
+<p><b>Purpose:</b></p>
+<p>Set the initialization vector to be used in the context of an AES-XTS operation.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_xts_set_iv (
+    struct zpc_aes_xts * ctx,
+    const unsigned char * iv )
+</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-XTS context object</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>iv</entry>
+<entry>16 byte initialization vector</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+<section>
+<title>zpc_aes_xts_set_key</title>
+<p><b>Purpose:</b></p>
+<p>Set the keys to be used in the context of an AES-XTS operation.</p>
+<p>If a key <ph rev="v1i1">(key1 or key2)</ph> is already set, the reference count of that key
+object is decremented. The context's key reference is set to the key object argument. If the key
+object argument is not NULL, the reference count of that key object is incremented.</p>
+<p><b>Format:</b>
+<codeblock>
+int zpc_aes_xts_set_key (
+    struct zpc_aes_xts * ctx,
+    struct zpc_aes_key * key1,
+    struct zpc_aes_key * key2 )</codeblock>
+</p>
+<p><b>Parameters:</b>
+</p>
+<table pgwide="0" frame="all">
+<tgroup cols="3" colsep="1" rowsep="1">
+<colspec colname="col1" colwidth="15*"/>
+<colspec colname="col2" colwidth="15*"/>
+<colspec colname="col3" colwidth="70*"/>
+<thead>
+<row>
+<entry>Direction</entry>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>input, output</entry>
+<entry>ctx</entry>
+<entry>AES-XTS context object</entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>key1</entry>
+<entry>first <keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+<row>
+<entry>input</entry>
+<entry>key2</entry>
+<entry>second <keyword conref="lxpc_conref.dita#lxpc_conref/aeskeyobj"/></entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+<p rev="v1i1">The API parameter <parmname>key1</parmname> corresponds to <codeph>Key<sub>1</sub></codeph> 
+in the IEEE-1619-2018 standard, and API parameter <parmname>key2</parmname> corresponds to 
+<codeph>Key<sub>2</sub></codeph>.</p>
+<p><b>Return codes:</b></p>
+<p> 0 on success. Otherwise, a non-zero error code is returned.</p>
+</section>
+</refbody>
+</reference>
+<?Pub *0000003393?>

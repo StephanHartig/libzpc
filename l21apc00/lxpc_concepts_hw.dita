@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE concept PUBLIC "-//IBM//DTD DITA IBM Concept//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<concept id="lxpc_crypto_hw" xml:lang="en-us">
+<title><ph conref="lxcommon.dita#phrases/ph_ibmz"/> cryptographic hardware categories</title>
+<titlealts>
+<navtitle>Crypto HW categories</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: <ph
+conref="lxcommon.dita#phrases/ph_ibmz"/> cryptographic hardware categories</searchtitle>
+</titlealts>
+<shortdesc>There are two cryptographic hardware devices available on the <ph
+conref="lxcommon.dita#phrases/ph_ibmz"/> processor family: the <keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf_long"/> (<keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf"/>) and the <keyword
+conref="lxpc_conref.dita#lxpc_conref/ibm"/> Crypto Express features (CEX4S through CEX7S), in
+general also called <keyword conref="lxpc_conref.dita#lxpc_conref/cryptocoprocs"/> or cryptographic
+adapters. Learn about the differences between these categories and their suitability for respective
+purposes.</shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm><ph conref="lxcommon.dita#phrases/ph_ibmz"/> cryptographic hardware</indexterm>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/cpacf_long"></keyword>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"></keyword></indexterm></indexterm>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"></keyword>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/cpacf_long"></keyword></indexterm></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<conbody>
+<section>
+<title><keyword conref="lxpc_conref.dita#lxpc_conref/cpacf_long"/> (<keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf"/>) </title>
+<p><keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> is a set of <ph
+conref="lxcommon.dita#phrases/ph_zarch"/> instructions provided by the Message Security Assist (MSA)
+facility and its extensions. <ph rev="v1i1">It mainly provides symmetric cryptographic functions (AES, TDES, DES), 
+but also selected asymmetric functions (ECC)</ph> using clear keys and
+protected keys. No additional hardware is necessary, though <keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf"/> requires specific microcode to be loaded which you can
+order as no-charge feature code (LIC #3863). This feature code is required for <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/>. However, hash functions can be performed by <keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf"/> without this feature code.</p>
+<p><keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> instructions provide the potential for
+significantly improved performance of  cryptographic operations. <keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf"/> supports various symmetric algorithms, including DES,
+3DES, and AES-CBC, algorithms for elliptic curve cryptography (ECC), and SHA-based digest
+algorithms: </p>
+<ul>
+<li>On <ph conref="lxcommon.dita#phrases/ph_ibmz15"/> and later: ECC algorithms for P-256, P-384,
+P-521, C25519, and C448 for clear and protected keys are available.</li>
+<li>On <ph conref="lxcommon.dita#phrases/ph_ibmz14"/> and later: SHA3-224, SHA3-256, SHA3-384,
+SHA3-512, SHAKE128, and SHAKE256 algorithms are available. A true random number generator is
+available. </li>
+<li>On all <ph conref="lxcommon.dita#phrases/ph_ibmz"/> systems: SHA-1 algorithm is available.
+SHA-224, SHA-256, SHA-384, and SHA-512 algorithms are available. AES, DES, and TDES algorithms for
+clear and protected keys.</li>
+</ul>
+<p><keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> must be configured and enabled on the
+system before you can use it.</p>
+<p><ph conref="lxcommon.dita#phrases/ph_ibmz14"/> and <ph conref="lxcommon.dita#phrases/ph_ibmz15"/>
+have one <keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> for every central processor (CP),
+and therefore, <keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> encryption throughput scales
+with the number of CPs in the system.</p>
+<p><keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> protected keys are effective keys wrapped
+with a temporary machine-generated firmware wrapping key (WK) specific to the  LPAR, KVM virtual
+server, or <ph conref="lxcommon.dita#phrases/ph_vm"/> guest virtual machine. The effective key
+inside the protected key cannot be discovered by the operating system. The effective key is
+unwrapped from the protected key inside the <keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/>
+and used in cryptographic functions performed by the <keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf"/> whenever a program uses a protected key to encrypt or
+decrypt a message. <keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> protected keys are never
+in an unwrapped (unencrypted) state in memory that is addressable by the operating system. Using
+<keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> functions with protected keys leverages the
+encryption performance benefits of <keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> hardware
+while providing added protection required by security-sensitive applications.</p>
+<p>The <keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> hardware that performs the symmetric
+key operations (AES, TDES, DES), and SHA functions, operates synchronously to CP operations. The CP
+cannot execute any other instruction while a <keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/>
+cryptographic operation is being processed. The hardware has a fixed set up time per request and a
+fixed operation speed for the unit of operation. Therefore maximum throughput can be achieved for
+larger blocks of data. These instructions operate on buffers of arbitrary length, up to a hardware
+defined limit.</p>
+<p>The <keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> hardware can be accessed by Message
+Security Assist instructions provided by the system architecture. However, application programs
+should use provided software libraries, utilities, or operating system services rather than use the
+MSA instructions directly. That is, instead of writing programs in assembler language issuing the
+<ph conref="lxcommon.dita#phrases/ph_ibmz"/> Message Security Assist (MSA) cryptographic
+instructions, <ph conref="lxcommon.dita#phrases/ph_linuxs"/> users should use APIs of <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/>, which in turn invoke the MSA instructions. Thus,
+<keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> is a crypto library making use of
+protected-key cryptography only, provided by <keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/>.
+For clear key cryptography, you can use, for example, the <keyword
+conref="lxpc_conref.dita#lxpc_conref/libica"/> library or the OpenSSL <apiname>libcrypto</apiname>
+library.</p>
+</section>
+<section>
+<title><keyword conref="lxpc_conref.dita#lxpc_conref/ibm"/> Crypto Express <keyword
+conref="lxpc_conref.dita#lxpc_conref/cryptocoprocs"/></title>
+<p> A Crypto Express <keyword conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> is often also
+referred to as cryptographic card or cryptographic adapter or just adapter. If a <keyword
+conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> is tamper-responding and performs cryptographic
+operations on keys protected by the coprocessor, then such a coprocessor is called a hardware
+security module (HSM). A <keyword conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> is divided
+into multiple domains, also called AP queues. Each AP queue acts as an independent cryptographic
+device (HSM) with its own state, including its own master key. </p>
+<p>An HSM is a general-purpose computing environment that withstands both physical and logical
+attacks and has special hardware to perform cryptographic operations. The HSM is accessed from a
+host computer system using a carefully-designed set of API functions. </p>
+<p><keyword conref="lxpc_conref.dita#lxpc_conref/ibm"/> Crypto Express adapters generate and process
+secure keys. Each domain of a <keyword conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> can
+contain active master keys which are used to generate secure keys. Thus, a secure key is actually an
+effective key (clear key) wrapped by the tamper-proof master key of a domain within a <keyword
+conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/>. Secure keys are persistent key objects that
+can be safely stored on unprotected media, because they are protected by a specific master key that
+resides in a hardware security module certified with FIPS 140-2 Level 4. Using these keys requires
+access to a domain of a <keyword conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> where the
+master key is activated.</p>
+<p>If data needs to be encrypted or decrypted, it is sent to the <keyword
+conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> where it is processed by the effective key
+which in turn is extracted (unwrapped) from the secure key with the help of the master key. </p>
+<p>You can find more information about <keyword conref="lxpc_conref.dita#lxpc_conref/ibm"/> Crypto
+Express <keyword conref="lxpc_conref.dita#lxpc_conref/cryptocoprocs"/> in this web site: </p>
+<codeblock><xref href="https://www.ibm.com/security/cryptocards" format="html" scope="external"/></codeblock>
+</section>
+</conbody>
+</concept>
+<?Pub *0000003393?>

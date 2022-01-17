@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE map PUBLIC "-//IBM//DTD DITA IBM Map//EN"
+ "ibm-map.dtd">
+<map id="lxpc_apis_map" title="libzpc APIs" xml:lang="en-US">
+<topicref href="lxpc_apis_key.dita"><topicmeta><navtitle>AES key APIs</navtitle></topicmeta></topicref>
+<topicref href="lxpc_apis_cbc.dita"><topicmeta><navtitle>AES CBC APIs</navtitle></topicmeta></topicref>
+<topicref href="lxpc_apis_ccm.dita"><topicmeta><navtitle>AES CCM APIs</navtitle></topicmeta></topicref>
+<topicref href="lxpc_apis_cmac.dita"><topicmeta><navtitle>AES CMAC APIs</navtitle></topicmeta></topicref>
+<topicref href="lxpc_apis_ecb.dita"><topicmeta><navtitle>AES ECB APIs</navtitle></topicmeta></topicref>
+<topicref href="lxpc_apis_gcm.dita"><topicmeta><navtitle>AES GCM APIs</navtitle></topicmeta></topicref>
+<topicref href="lxpc_apis_xts.dita"><topicmeta><navtitle>AES XTS APIs</navtitle></topicmeta></topicref>
+<topicref href="lxpc_apis_error.dita"><topicmeta><navtitle>Error API</navtitle></topicmeta></topicref>
+<topicref href="lxpc_apis_samprog.dita"><topicmeta><navtitle>libzpc sample program</navtitle></topicmeta></topicref>
+</map>

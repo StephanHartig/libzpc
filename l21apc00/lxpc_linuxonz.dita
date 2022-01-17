@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--onzArbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE topic PUBLIC "-//IBM//DTD DITA IBM Topic//EN"
+ "ibm-topic.dtd">
+<?Pub Sty _display FontColor="red"?>
+<?Pub Inc?>
+<topic xml:lang="en-us" id="libzpc_linuxonz">
+<title><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> - A Protected-Key Cryptographic
+Library</title>
+<titlealts>
+<navtitle><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> - A Protected-Key Cryptographic
+Library</navtitle>
+<searchtitle><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> - A Protected-Key Cryptographic
+Library</searchtitle>
+</titlealts>
+<shortdesc><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> offers APIs to exploit the high
+performance of protected-key cryptography in the <keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf"/> without the need to code assembler language. As
+protected keys are volatile, <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> provides a
+mechanism to transform a protected key into a permanent secure key with the possibility to
+automatically derive a new protected key whenever required. </shortdesc>
+<prolog>
+<metadata>
+<keywords/>
+</metadata>
+</prolog>
+</topic>
+<?Pub *0000001874?>

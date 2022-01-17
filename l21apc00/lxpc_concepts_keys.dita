@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE concept PUBLIC "-//IBM//DTD DITA IBM Concept//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<concept id="lxpc_crypto_keys" xml:lang="en-us">
+<title>Key types used by <ph conref="lxcommon.dita#phrases/ph_ibmz"/> cryptographic hardware</title>
+<titlealts>
+<navtitle>Key types for crypto HW</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: 
+Key types used by <ph conref="lxcommon.dita#phrases/ph_ibmz"/> cryptographic hardware</searchtitle>
+</titlealts>
+<shortdesc>The different types of <ph conref="lxcommon.dita#phrases/ph_ibmtm"/> cryptographic
+hardware can use clear keys, secure keys or protected keys. The difference between these key types
+is not the value of the effective key which is the plain text key that is used to encrypt the data.
+However, the difference is the strength of protection that is applied to the effective key.  There
+is no difference in the cryptographic algorithms used by the hardware, and the resulting cipher text
+is the same for all types of key if the underlying effective key is the same. </shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm><ph conref="lxcommon.dita#phrases/ph_ibmz"/> cryptographic hardware</indexterm>
+</keywords>
+</metadata>
+</prolog>
+<conbody>
+<p>The keys processed by the systems as described in <xref href="lxpc_concepts_hw.dita"/> fall into
+one of the following categories:</p>
+<dl>
+<dlentry>
+<dt>clear key</dt>
+<dd>A clear key is an effective key in plain text. That is, the bit pattern of a clear key is the
+one that is used in the cipher algorithm. Thus, the clear key is the same as the effective key. The
+term clear key is commonly used in the context of <ph conref="lxcommon.dita#phrases/ph_ibmz"/>
+cryptographic hardware. Therefore, whoever knows the clear key can perform cryptographic operations
+(like encrypt or decrypt) using that clear key. </dd>
+</dlentry>
+<dlentry>
+<dt>secure key</dt>
+<dd>A secure key is a clear or effective key encrypted by an HSM master key. Secure keys can be used
+in cryptographic functions performed by the HSM. Thus, each cryptographic function on a secure key
+requires I/O operations to the HSM. A secure key is only usable in the HSM it was generated in or in
+an HSM that is configured with the same master key as the HSM that was used to generate the secure
+key.</dd>
+</dlentry>
+<dlentry>
+<dt>protected key</dt>
+<dd>Protected keys are keys encrypted by the machine-generated <keyword
+conref="lxpc_conref.dita#lxpc_conref/ibm"/> firmware wrapping key of an LPAR or a virtual guest. A
+protected key is created by <ph conref="lxcommon.dita#phrases/ph_ibmz"/> firmware for an LPAR or a
+<ph conref="lxcommon.dita#phrases/ph_vm"/> guest, and can only be used by the instance of the
+operating system that created that key. Also, protected keys are volatile, because they are only
+valid as long as the LPAR or the virtual guest that generated the key is running. The operating
+system has no access to the effective key within a protected key, and protected keys are useless on
+any other system. Protected keys are used for high performance symmetric AES cryptographic functions
+<ph rev="v1i1">and high performance asymmetric ECC functions</ph> processed by the <keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf"/>. The <keyword
+conref="lxpc_conref.dita#lxpc_conref/cpacf"/> also provides protected support for DES/3DES and
+ECDSA. As the <keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> is implemented as a feature of
+an <ph conref="lxcommon.dita#phrases/ph_ibmz"/> CPU, it performs cryptographic operations at CPU
+speed.</dd>
+</dlentry>
+</dl>
+<p>This documentation describes the APIs offered by the <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> library. Use these APIs to exploit the advantages of
+<keyword conref="lxpc_conref.dita#lxpc_conref/cpacf"/> cryptographic functions working with
+protected keys. In <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/>, a protected key is
+derived from a persistent secure key, both using the same effective key. The effective key of the
+persistent secure key is unwrapped with the master key of a <keyword
+conref="lxpc_conref.dita#lxpc_conref/cryptocoproc"/> and is re-wrapped with the wrapping key of an
+LPAR or virtual guest. Therefore, as protected keys are volatile, this method ensures that a new
+protected key with the same wrapped effective key can always be derived whenever an old protected
+key does no longer exist or is no longer valid.</p>
+</conbody>
+</concept>
+<?Pub *0000003393?>

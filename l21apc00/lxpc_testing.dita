@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE concept PUBLIC "-//IBM//DTD DITA IBM Concept//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<concept id="lxpc_testing" xml:lang="en-us">
+<title>Testing</title>
+<titlealts>
+<navtitle>Testing</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: Testing <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/></searchtitle>
+</titlealts>
+<shortdesc>Read the contained information on how to run programs testing the <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> library.</shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> testing</indexterm>
+<indexterm> testing <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></indexterm>
+</keywords>
+</metadata>
+</prolog>
+<conbody><p>To run all tests after building the library, run the following command from the build directory:</p>
+<codeblock>./runtest</codeblock>
+<p>The following environment variables can be passed to <codeph>./runtest</codeph>:</p>
+<dl>
+<dlentry>
+<dt><codeph>ZPC_TEST_AES_KEY_TYPE=&lt;type></codeph></dt>
+<dd>The choices for &lt;type> are the supported AES secure key types: <ul>
+<li><codeph>ZPC_AES_KEY_TYPE_CCA_DATA</codeph></li>
+<li><codeph>ZPC_AES_KEY_TYPE_CCA_CIPHER</codeph></li>
+<li>and <codeph>ZPC_AES_KEY_TYPE_EP11</codeph>.</li>
+</ul><p>AES tests are skipped if this variable is unset or its value is invalid.</p>
+</dd>
+</dlentry>
+<dlentry>
+<dt>ZPC_TEST_AES_KEY_SIZE=&lt;size></dt>
+<dd>The choices for &lt;size> are 128, 192 and 256.<p> AES tests are skipped if this variable is
+unset or its value is invalid.</p></dd>
+</dlentry>
+<dlentry>
+<dt>ZPC_TEST_AES_KEY_FLAGS=&lt;flags></dt>
+<dd>&lt;flags> is a 4 byte unsigned integer value that specifies the key's flags. <p>&lt;flags>
+defaults to 0 if this variable is unset or its value is invalid.</p></dd>
+</dlentry>
+<dlentry>
+<dt>ZPC_TEST_AES_KEY_MKVP=&lt;mkvp></dt>
+<dd>Test the APQNs that match &lt;mkvp> and the selected key type.</dd>
+</dlentry>
+<dlentry>
+<dt>ZPC_TEST_AES_KEY_APQNS=&lt;apqns></dt>
+<dd>Test the specified APQNS.<p>The syntax for &lt;apqns> is:</p>
+<codeblock>"&lt;card_hex>.&lt;domain_hex>&lt;whitespace>&lt;card_hex>.&lt;domain_hex> ...." 
+<b>Example:</b>
+ZPC_TEST_AES_KEY_APQNS="01.0037 02.0037 03.0020 0a.0031 0b.0031"
+</codeblock>
+<p>The separator between APQNs is a whitespace. Whitespaces at the beginning and end of the string
+are ignored.</p></dd>
+</dlentry>
+</dl>
+<p>Issue the command <cmdname>./runtest -h</cmdname> for help.</p>
+</conbody>
+</concept>
+<?Pub *0000003393?>

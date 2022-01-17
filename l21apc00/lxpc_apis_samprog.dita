@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Arbortext, Inc., 1988-2011, v.4002-->
+<!DOCTYPE reference PUBLIC "-//IBM//DTD DITA IBM Reference//EN"
+ "ibm-concept.dtd">
+<?Pub Sty _display FontColor="red"?>
+<reference id="lxpc_apis_cbc" xml:lang="en-us">
+<title>Sample programs using <keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/></title>
+<titlealts>
+<navtitle> Sample programs</navtitle>
+<searchtitle><ph conref="lxcommon.dita#phrases/lib_title"/>: Sample programs using <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/>
+</searchtitle>
+</titlealts>
+<shortdesc>View some sample applications using some of the most important <keyword
+conref="lxpc_conref.dita#lxpc_conref/libzpc"/> APIs. They also illustrate the techniques how to apply 
+these APIs.</shortdesc>
+<prolog>
+<metadata>
+<keywords>
+<indexterm>sample program</indexterm>
+<indexterm><keyword conref="lxpc_conref.dita#lxpc_conref/libzpc"/> sample program</indexterm>
+</keywords>
+</metadata>
+</prolog>
+<refbody>
+<section><title>Generating a CCA AES DATA key</title>
+<p>This sample generates a secure key/protected key pair from a common effective key, where a new
+protected key is automatically re-derived from the secure key when required, for example, after a
+reboot of an LPAR, which causes a change of the protected key and thus of the wrapping key
+verification pattern (WKPV).</p>
+<codeblock>
+*
+ * Example: Generate a 256-bit AES key on CCA card 1 on domain 37
+ * as a CCA data key. Use the key to encrypt a message in multiple
+ * chunks using AES-GCM.
+ * Build: cc -Wall -Wextra -pthread -o aes_gcm aes_gcm.c -lzpc -ldl
+ */
+#include &lt;stdlib.h>
+#include &lt;stdio.h>
+#include &lt;zpc/aes_key.h>
+#include &lt;zpc/aes_gcm.h>
+
+const int size      = 256;
+const int type      = ZPC_AES_KEY_TYPE_CCA_DATA;
+const char *apqns[] = {"01.0037", NULL};
+
+int main(void)
+{
+	unsigned char iv[12], aad[99], m[99], tag[12], c[99];
+	struct zpc_aes_key *aes_key = NULL;
+	struct zpc_aes_gcm *aes_gcm = NULL;
+	int rc = -1, rv = -1;
+
+	/* Allocate objects. */
+	rc = zpc_aes_key_alloc(&amp;aes_key);
+	if (rc) goto ret;
+	rc = zpc_aes_gcm_alloc(&amp;aes_gcm);
+	if (rc) goto ret;
+
+	/* Setup key object. */
+	rc = zpc_aes_key_set_type(aes_key, type);
+	if (rc) goto ret;
+	rc = zpc_aes_key_set_apqns(aes_key, apqns);
+	if (rc) goto ret;
+	rc = zpc_aes_key_set_size(aes_key, size);
+	if (rc) goto ret;
+
+	/* Generate key. */
+	rc = zpc_aes_key_generate(aes_key);
+	if (rc) goto ret;
+
+	/* Setup context object. */
+	rc = zpc_aes_gcm_set_key(aes_gcm, aes_key);
+	if (rc) goto ret;
+	rc = zpc_aes_gcm_set_iv(aes_gcm, iv, 12);
+	if (rc) goto ret;
+
+	/* Encrypt first chunk. */
+	rc = zpc_aes_gcm_encrypt(aes_gcm, c, tag, 12, aad, 99, m, 32);
+	if (rc) goto ret;
+
+	/* Encrypt second chunk. */
+	rc = zpc_aes_gcm_encrypt(aes_gcm, c, tag, 12, NULL, 0, m + 32, 99 - 32);
+	if (rc) goto ret;
+
+	rv = 0;
+ret:
+	/* Free objects. */
+	zpc_aes_gcm_free(&amp;aes_gcm);
+	zpc_aes_key_free(&amp;aes_key);
+
+	printf("%s\n", rv == 0 ? "SUCCESS" : "ERROR");
+	return rv;
+}
+</codeblock>
+</section>
+<section><title>Generating a random protected key</title>
+<p>This sample generates a protected key only, without a secure key. This protected key becomes
+unusable, if the WKVP changes.</p>
+<codeblock>
+/*
+ * Example: Generate a 256-bit AES key as a random protected key.
+ * Use the key to encrypt a message using AES-GCM.
+ * Build: cc -Wall -Wextra -pthread -o aes_gcm2 aes_gcm2.c -lzpc -ldl
+ */
+#include &lt;stdlib.h>
+#include &lt;stdio.h>
+#include &lt;zpc/aes_key.h>
+#include &lt;zpc/aes_gcm.h>
+
+const int size      = 256;
+
+int main(void)
+{
+	unsigned char iv[12], aad[99], m[99], tag[12], c[99];
+	struct zpc_aes_key *aes_key = NULL;
+	struct zpc_aes_gcm *aes_gcm = NULL;
+	int rc = -1, rv = -1;
+
+	/* Allocate objects. */
+	rc = zpc_aes_key_alloc(&amp;aes_key);
+	if (rc) goto ret;
+	rc = zpc_aes_gcm_alloc(&amp;aes_gcm);
+	if (rc) goto ret;
+
+	/* Setup key object. */
+	rc = zpc_aes_key_set_size(aes_key, size);
+	if (rc) goto ret;
+
+	/* Generate key. */
+	rc = zpc_aes_key_generate(aes_key);
+	if (rc) goto ret;
+
+	/* Setup context object. */
+	rc = zpc_aes_gcm_set_key(aes_gcm, aes_key);
+	if (rc) goto ret;
+	rc = zpc_aes_gcm_set_iv(aes_gcm, iv, 12);
+	if (rc) goto ret;
+
+	/* Encrypt. */
+	rc = zpc_aes_gcm_encrypt(aes_gcm, c, tag, 12, aad, 99, m, 99);
+	if (rc) goto ret;
+
+	rv = 0;
+ret:
+	/* Free objects. */
+	zpc_aes_gcm_free(&amp;aes_gcm);
+	zpc_aes_key_free(&amp;aes_key);
+
+	printf("%s\n", rv == 0 ? "SUCCESS" : "ERROR");
+	return rv;
+}
+</codeblock>
+</section>
+</refbody>
+</reference>
+<?Pub *0000003393?>
